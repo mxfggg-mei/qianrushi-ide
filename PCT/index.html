@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCT-100 过程控制终端</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 自定义窗口标题栏 -->
+        <header class="window-titlebar">
+            <div class="titlebar-left">
+                <h1 class="app-title">PCT-100</h1>
+                <span class="app-subtitle">化工过程控制实训装置</span>
+            </div>
+            <div class="titlebar-center">
+                <div class="status-indicator" id="mqtt-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">MQTT</span>
+                </div>
+                <div class="status-indicator" id="device-status">
+                    <span class="status-dot"></span>
+                    <span class="status-text">设备</span>
+                </div>
+            </div>
+            <div class="titlebar-right">
+                <button class="theme-toggle-btn" id="theme-toggle-btn" title="切换主题" onclick="toggleTheme()">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                    </svg>
+                </button>
+                <button class="window-btn" id="minimize-btn" title="最小化">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 19h12v-2H6v2z"/>
+                    </svg>
+                </button>
+                <button class="window-btn" id="maximize-btn" title="最大化">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M6 14h12v2H6z"/>
+                        <path d="M6 6h12v2H6z"/>
+                    </svg>
+                </button>
+                <button class="window-btn close-btn" id="close-btn" title="关闭">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 控制栏：服务器选择 / 设备ID / 连接开关 -->
+        <div class="control-bar">
+            <div class="control-group server-group">
+                <span class="control-label">服务器</span>
+                <div class="server-tabs">
+                    <button class="server-tab active" data-server="external_ws">外网 8083</button>
+                    <button class="server-tab" data-server="internal">内网</button>
+                </div>
+                <div class="internal-config" id="internal-config" style="display: none;">
+                    <input type="text" class="ip-input" id="internal-ip" value="192.168.1.100" placeholder="IP地址">
+                    <span class="port-separator">:</span>
+                    <input type="text" class="port-input" id="internal-port" value="8081" placeholder="端口">
+                </div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">设备</span>
+                <div class="device-id-container">
+                    <span class="device-id-prefix">PCT_100_</span>
+                    <input type="text" class="device-id-input" id="device-id-input" value="006" maxlength="3" pattern="[0-9]{3}">
+                </div>
+            </div>
+            <div class="control-group">
+                <span class="control-label">连接MQTT平台</span>
+                <label class="switch">
+                    <input type="checkbox" id="mqtt-switch">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- 主体内容区 -->
+        <main class="main-content">
+            <!-- 左侧栏 -->
+            <div class="left-column">
+                <!-- 传感器数据 -->
+                <section class="panel sensor-panel">
+                    <h2 class="panel-title">传感器数据</h2>
+                    <div class="sensor-grid">
+                        <div class="sensor-card" id="temp-card">
+                            <div class="sensor-icon">T</div>
+                            <div class="sensor-value">
+                                <span class="sensor-number" id="temp-value">--.-</span>
+                                <span class="sensor-unit">°C</span>
+                            </div>
+                            <div class="sensor-label">温度 DS18B20</div>
+                            <div class="sensor-wave"></div>
+                        </div>
+                        <div class="sensor-card" id="light-card">
+                            <div class="sensor-icon">L</div>
+                            <div class="sensor-value">
+                                <span class="sensor-number" id="light-value">----</span>
+                                <span class="sensor-unit">Lux</span>
+                            </div>
+                            <div class="sensor-label">光照 GL5516</div>
+                            <div class="sensor-wave"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 阈值设置 -->
+                <section class="panel threshold-panel">
+                    <h2 class="panel-title">阈值设置</h2>
+                    <div class="threshold-list">
+                        <div class="threshold-item">
+                            <div class="threshold-current">
+                                <span class="threshold-label">当前</span>
+                                <span class="threshold-value-display" id="current-temp">--.-</span>
+                                <span class="threshold-unit">°C</span>
+                            </div>
+                            <div class="threshold-input-group">
+                                <label class="threshold-label-text">温度阈值</label>
+                                <div class="number-input">
+                                    <button class="num-btn" data-target="temp-threshold" data-step="-0.5">−</button>
+                                    <input type="number" id="temp-threshold" value="28" step="0.5" min="0" max="100">
+                                    <button class="num-btn" data-target="temp-threshold" data-step="0.5">+</button>
+                                </div>
+                                <button class="submit-btn" data-cmd="set_threshold" data-type="temp">下发</button>
+                            </div>
+                        </div>
+                        <div class="threshold-item">
+                            <div class="threshold-current">
+                                <span class="threshold-label">当前</span>
+                                <span class="threshold-value-display" id="current-light">----</span>
+                                <span class="threshold-unit">Lux</span>
+                            </div>
+                            <div class="threshold-input-group">
+                                <label class="threshold-label-text">光照阈值</label>
+                                <div class="number-input">
+                                    <button class="num-btn" data-target="light-threshold" data-step="-10">−</button>
+                                    <input type="number" id="light-threshold" value="119" step="10" min="0" max="1000">
+                                    <button class="num-btn" data-target="light-threshold" data-step="10">+</button>
+                                </div>
+                                <button class="submit-btn" data-cmd="set_threshold" data-type="light">下发</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 右侧栏 -->
+            <div class="right-column">
+                <section class="panel actuator-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">执行器控制</h2>
+                        <div class="mode-switch">
+                            <button class="mode-btn active" data-mode="auto">自动</button>
+                            <button class="mode-btn" data-mode="manual">手动</button>
+                        </div>
+                    </div>
+
+                    <!-- 总闸 -->
+                    <div class="master-switch-row">
+                        <span class="master-label">总闸</span>
+                        <div class="master-state" id="master-state">断开</div>
+                    </div>
+
+                    <!-- 灯光和风扇控制 -->
+                    <div class="actuator-grid">
+                        <div class="actuator-card" id="light-actuator">
+                            <div class="actuator-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.87-3.13-7-7-7zm-2 15v-2h4v2h-4z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="actuator-name">灯光</div>
+                            <div class="actuator-relay">继电器3</div>
+                            <label class="switch">
+                                <input type="checkbox" id="relay3-switch" data-relay="3">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="actuator-card" id="fan-actuator">
+                            <div class="actuator-icon fan-icon">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 11a1 1 0 011 1v.5a1.5 1.5 0 103 0V12a4 4 0 00-4-4h-.5a1.5 1.5 0 100 3h.5z" fill="currentColor"/>
+                                    <path d="M12 13a1 1 0 01-1-1v-.5a1.5 1.5 0 10-3 0V12a4 4 0 004 4h.5a1.5 1.5 0 100-3H12z" fill="currentColor"/>
+                                    <path d="M13 12a1 1 0 011-1h.5a1.5 1.5 0 100-3H14a4 4 0 00-4 4v.5a1.5 1.5 0 103 0V12z" fill="currentColor"/>
+                                    <path d="M11 12a1 1 0 01-1 1h-.5a1.5 1.5 0 100 3H10a4 4 0 004-4v-.5a1.5 1.5 0 10-3 0V12z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <div class="actuator-name">风扇</div>
+                            <div class="actuator-relay">继电器4</div>
+                            <label class="switch">
+                                <input type="checkbox" id="relay4-switch" data-relay="4">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="auto-mode-hint" id="auto-mode-hint">
+                        自动模式下执行器由设备自动控制
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 调试日志 -->
+        <section class="panel log-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    调试日志
+                    <span class="log-count" id="log-count">0</span>
+                </h2>
+                <label class="switch">
+                    <input type="checkbox" id="log-switch" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="log-content" id="log-content"></div>
+            <div class="log-footer">
+                <button class="clear-btn" id="clear-log">清空</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Toast 提示 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- MQTT.js 库 (WebSocket over MQTT) -->
+    <script src="https://unpkg.com/mqtt@5.3.4/dist/mqtt.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/logger.js"></script>
+    <script src="js/mqtt-client.js"></script>
+    <script src="js/ui-controller.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

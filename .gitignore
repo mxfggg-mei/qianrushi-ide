@@ -1,0 +1,33 @@
+# Arduino build artifacts
+*.o
+*.d
+*.elf
+*.hex
+*.eep
+*.lss
+*.sym
+*.map
+*.bin
+
+# Arduino IDE
+*.tmp
+*.bak
+*.swp
+.DS_Store
+.vscode/
+.idea/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs
+*.log
+
+# OS files
+Thumbs.db

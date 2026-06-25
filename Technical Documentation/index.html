@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能环境控制系统 - 技术文档</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <h1 class="logo-title">智能环境控制</h1>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <ul class="nav-list">
+                    <li class="nav-item active" data-page="overview">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                        </span>
+                        <span class="nav-text">系统概述</span>
+                    </li>
+                    <li class="nav-item" data-page="architecture">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </span>
+                        <span class="nav-text">系统架构</span>
+                    </li>
+                    <li class="nav-item" data-page="hardware">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                <path d="M2 17l10 5 10-5"></path>
+                                <path d="M2 12l10 5 10-5"></path>
+                            </svg>
+                        </span>
+                        <span class="nav-text">硬件模块</span>
+                    </li>
+                    <li class="nav-item" data-page="software">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
+                        </span>
+                        <span class="nav-text">软件模块</span>
+                    </li>
+                    <li class="nav-item" data-page="operation">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polygon points="10.29 7.29 14.17 11 10.29 14.71 11.71 16.13 16.59 11.25 11.71 6.37 10.29 7.29"></polygon>
+                            </svg>
+                        </span>
+                        <span class="nav-text">操作指南</span>
+                    </li>
+                    <li class="nav-item" data-page="mqtt">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </span>
+                        <span class="nav-text">MQTT协议</span>
+                    </li>
+                    <li class="nav-item" data-page="commands">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="19" x2="12" y2="5"></line>
+                                <polyline points="5 12 12 5 19 12"></polyline>
+                            </svg>
+                        </span>
+                        <span class="nav-text">串口命令</span>
+                    </li>
+                    <li class="nav-item" data-page="troubleshooting">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </span>
+                        <span class="nav-text">故障排查</span>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="version">v1.0.0</div>
+                <div class="date">2026-06-05</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-wrapper">
+                <div id="page-overview" class="page-content active">
+                    <section class="hero-section">
+                        <div class="hero-content">
+                            <h1 class="hero-title">智能环境控制系统</h1>
+                            <p class="hero-subtitle">基于 ESP32 的自动化环境监测与控制解决方案</p>
+                            <div class="hero-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">8</span>
+                                    <span class="stat-label">核心模块</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">2</span>
+                                    <span class="stat-label">控制模式</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">MQTT</span>
+                                    <span class="stat-label">物联网协议</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">OLED</span>
+                                    <span class="stat-label">实时显示</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="circuit-board">
+                                <div class="board-element cpu"></div>
+                                <div class="board-element sensor temp"></div>
+                                <div class="board-element sensor light"></div>
+                                <div class="board-element relay r1"></div>
+                                <div class="board-element relay r2"></div>
+                                <div class="board-element display"></div>
+                                <div class="board-element rgb"></div>
+                                <div class="connection-lines"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="features-section">
+                        <h2 class="section-title">核心功能</h2>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon auto">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                        <path d="M3 3v5h5"></path>
+                                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                                        <path d="M16 21h5v-5"></path>
+                                    </svg>
+                                </div>
+                                <h3>自动模式</h3>
+                                <p>基于光照和温度传感器数据，自动控制照明和风扇设备，实现智能化环境调节。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon manual">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <line x1="12" y1="2" x2="12" y2="6"></line>
+                                        <line x1="12" y1="18" x2="12" y2="22"></line>
+                                        <line x1="2" y1="12" x2="6" y2="12"></line>
+                                        <line x1="18" y1="12" x2="22" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <h3>手动模式</h3>
+                                <p>支持按键手动控制，提供4种状态切换，满足用户自定义控制需求。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon monitor">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                    </svg>
+                                </div>
+                                <h3>实时监测</h3>
+                                <p>OLED显示屏实时显示系统状态，包括模式、光强、温度、设备状态和WiFi连接状态。</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon iot">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                </div>
+                                <h3>物联网接入</h3>
+                                <p>支持WiFi连接和MQTT协议，实现远程控制和状态上报，支持阈值配置和设备管理。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="quick-start">
+                        <h2 class="section-title">快速开始</h2>
+                        <div class="quick-start-steps">
+                            <div class="step-item">
+                                <span class="step-number">01</span>
+                                <div class="step-content">
+                                    <h4>硬件连接</h4>
+                                    <p>按电路图连接传感器、继电器和显示屏。</p>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-number">02</span>
+                                <div class="step-content">
+                                    <h4>烧录程序</h4>
+                                    <p>使用Arduino IDE将代码烧录到ESP32开发板。</p>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-number">03</span>
+                                <div class="step-content">
+                                    <h4>配置WiFi</h4>
+                                    <p>通过串口配置WiFi连接信息。</p>
+                                </div>
+                            </div>
+                            <div class="step-item">
+                                <span class="step-number">04</span>
+                                <div class="step-content">
+                                    <h4>开始使用</h4>
+                                    <p>按下KEY1使能系统，长按KEY2切换模式。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div id="page-architecture" class="page-content">
+                    <section class="section-header">
+                        <h1>系统架构</h1>
+                        <p>基于分层架构设计，模块化实现各功能组件</p>
+                    </section>
+
+                    <section class="architecture-diagram">
+                        <div class="layer">
+                            <h3>应用层</h3>
+                            <div class="layer-components">
+                                <div class="component">自动控制逻辑</div>
+                                <div class="component">手动控制逻辑</div>
+                                <div class="component">状态管理</div>
+                            </div>
+                        </div>
+                        <div class="layer-connector"></div>
+                        <div class="layer">
+                            <h3>服务层</h3>
+                            <div class="layer-components">
+                                <div class="component">MQTT通信</div>
+                                <div class="component">WiFi管理</div>
+                                <div class="component">串口命令</div>
+                            </div>
+                        </div>
+                        <div class="layer-connector"></div>
+                        <div class="layer">
+                            <h3>驱动层</h3>
+                            <div class="layer-components">
+                                <div class="component">传感器驱动</div>
+                                <div class="component">继电器驱动</div>
+                                <div class="component">显示驱动</div>
+                                <div class="component">RGB驱动</div>
+                            </div>
+                        </div>
+                        <div class="layer-connector"></div>
+                        <div class="layer">
+                            <h3>硬件层</h3>
+                            <div class="layer-components">
+                                <div class="component">ESP32主控</div>
+                                <div class="component">外设模块</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="flow-section">
+                        <h2 class="section-title">控制流程</h2>
+                        <div class="flow-chart">
+                            <div class="flow-step">
+                                <div class="flow-icon">🔌</div>
+                                <h4>系统启动</h4>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-icon">⚡</div>
+                                <h4>KEY1使能</h4>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-icon">🔄</div>
+                                <h4>模式选择</h4>
+                            </div>
+                            <div class="flow-branch">
+                                <div class="branch-path">
+                                    <span>自动模式</span>
+                                    <div class="branch-arrow">↓</div>
+                                    <div class="branch-step">传感器采集 → 阈值判断 → 设备控制</div>
+                                </div>
+                                <div class="branch-path">
+                                    <span>手动模式</span>
+                                    <div class="branch-arrow">↓</div>
+                                    <div class="branch-step">KEY2切换 → 状态切换 → 设备控制</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div id="page-hardware" class="page-content">
+                    <section class="section-header">
+                        <h1>硬件模块</h1>
+                        <p>详细的硬件配置和引脚定义</p>
+                    </section>
+
+                    <section class="hardware-grid">
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon esp32">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                        <circle cx="8" cy="8" r="1"></circle>
+                                        <circle cx="16" cy="8" r="1"></circle>
+                                        <circle cx="8" cy="16" r="1"></circle>
+                                        <circle cx="16" cy="16" r="1"></circle>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <h3>ESP32 主控</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">CPU</span>
+                                    <span class="spec-value">单核 240MHz</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">WiFi</span>
+                                    <span class="spec-value">802.11 b/g/n</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">蓝牙</span>
+                                    <span class="spec-value">BLE 4.2</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">Flash</span>
+                                    <span class="spec-value">4MB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon sensor">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </div>
+                                <h3>光照传感器</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">引脚</span>
+                                    <span class="spec-value">GPIO1 (ADC)</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">类型</span>
+                                    <span class="spec-value">光敏电阻</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">精度</span>
+                                    <span class="spec-value">12-bit</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">量程</span>
+                                    <span class="spec-value">0-4095</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon temp">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                    </svg>
+                                </div>
+                                <h3>温度传感器</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">型号</span>
+                                    <span class="spec-value">DS18B20</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">引脚</span>
+                                    <span class="spec-value">GPIO10 (1-Wire)</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">量程</span>
+                                    <span class="spec-value">-55°C ~ 125°C</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">精度</span>
+                                    <span class="spec-value">±0.5°C</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon relay">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                        <circle cx="8" cy="8" r="2"></circle>
+                                        <circle cx="16" cy="8" r="2"></circle>
+                                    </svg>
+                                </div>
+                                <h3>继电器模块</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">RELAY1</span>
+                                    <span class="spec-value">GPIO6 - 照明灯</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">RELAY2</span>
+                                    <span class="spec-value">GPIO7 - 风扇</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">控制方式</span>
+                                    <span class="spec-value">高电平触发</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">额定电流</span>
+                                    <span class="spec-value">10A/250VAC</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon display">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                    </svg>
+                                </div>
+                                <h3>OLED显示屏</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">型号</span>
+                                    <span class="spec-value">SH1106 128x64</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">接口</span>
+                                    <span class="spec-value">I2C</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">SDA</span>
+                                    <span class="spec-value">GPIO4</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">SCL</span>
+                                    <span class="spec-value">GPIO5</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon rgb">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                </div>
+                                <h3>WS2812 RGB灯</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">引脚</span>
+                                    <span class="spec-value">GPIO0</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">协议</span>
+                                    <span class="spec-value">GRB 800kHz</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">亮度</span>
+                                    <span class="spec-value">可调 (0-255)</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">功能</span>
+                                    <span class="spec-value">状态指示</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hardware-card">
+                            <div class="hardware-header">
+                                <div class="hardware-icon key">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </div>
+                                <h3>按键模块</h3>
+                            </div>
+                            <div class="hardware-specs">
+                                <div class="spec">
+                                    <span class="spec-label">KEY1</span>
+                                    <span class="spec-value">GPIO20 - 系统使能</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">KEY2</span>
+                                    <span class="spec-value">GPIO21 - 模式切换</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">KEY2短按</span>
+                                    <span class="spec-value">手动模式状态切换</span>
+                                </div>
+                                <div class="spec">
+                                    <span class="spec-label">KEY2长按</span>
+                                    <span class="spec-value">切换自动/手动模式</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="pinout-section">
+                        <h2 class="section-title">引脚分配表</h2>
+                        <table class="pinout-table">
+                            <thead>
+                                <tr>
+                                    <th>引脚</th>
+                                    <th>功能</th>
+                                    <th>类型</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>GPIO0</td>
+                                    <td>WS2812 RGB</td>
+                                    <td>输出</td>
+                                    <td>RGB灯控制</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO1</td>
+                                    <td>光照传感器</td>
+                                    <td>ADC输入</td>
+                                    <td>光敏电阻模拟输入</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO4</td>
+                                    <td>I2C SDA</td>
+                                    <td>I2C</td>
+                                    <td>OLED数据</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO5</td>
+                                    <td>I2C SCL</td>
+                                    <td>I2C</td>
+                                    <td>OLED时钟</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO6</td>
+                                    <td>RELAY1</td>
+                                    <td>输出</td>
+                                    <td>照明灯控制</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO7</td>
+                                    <td>RELAY2</td>
+                                    <td>输出</td>
+                                    <td>风扇控制</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO10</td>
+                                    <td>温度传感器</td>
+                                    <td>1-Wire</td>
+                                    <td>DS18B20数据</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO20</td>
+                                    <td>KEY1</td>
+                                    <td>输入</td>
+                                    <td>系统使能按键</td>
+                                </tr>
+                                <tr>
+                                    <td>GPIO21</td>
+                                    <td>KEY2</td>
+                                    <td>输入</td>
+                                    <td>模式切换按键</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+
+                <div id="page-software" class="page-content">
+                    <section class="section-header">
+                        <h1>软件模块</h1>
+                        <p>模块化设计的软件架构</p>
+                    </section>
+
+                    <section class="module-tree">
+                        <div class="tree-root">
+                            <div class="tree-node root">
+                                <div class="node-content">
+                                    <span class="node-icon">📁</span>
+                                    <span class="node-name">auto_manual_control.ino</span>
+                                </div>
+                                <div class="node-description">主程序入口，初始化各模块</div>
+                                <div class="tree-children">
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">exti / key</span>
+                                        </div>
+                                        <div class="node-description">外部中断与按键处理</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">relay</span>
+                                        </div>
+                                        <div class="node-description">继电器控制逻辑</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">light_sensor</span>
+                                        </div>
+                                        <div class="node-description">光照传感器驱动</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">temp_sensor</span>
+                                        </div>
+                                        <div class="node-description">温度传感器驱动</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">display</span>
+                                        </div>
+                                        <div class="node-description">OLED显示驱动</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">ws2812_rgb</span>
+                                        </div>
+                                        <div class="node-description">RGB灯控制</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">wifi_connect</span>
+                                        </div>
+                                        <div class="node-description">WiFi连接管理</div>
+                                    </div>
+                                    <div class="tree-node">
+                                        <div class="node-content">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-name">mqtt_connect</span>
+                                        </div>
+                                        <div class="node-description">MQTT通信协议</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="module-details">
+                        <h2 class="section-title">模块功能详解</h2>
+                        
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge exti">EXTI</div>
+                                <h3>外部中断与按键处理</h3>
+                            </div>
+                            <p>处理按键输入，支持短按和长按识别。KEY1作为系统使能开关，KEY2支持短按切换状态和长按2秒切换模式。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">exti_init()</span>
+                                <span class="func-tag">exti_task()</span>
+                                <span class="func-tag">key_init()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge relay">RELAY</div>
+                                <h3>继电器控制</h3>
+                            </div>
+                            <p>管理两个继电器输出，支持自动和手动两种模式。自动模式下根据传感器数据控制照明和风扇；手动模式下通过按键切换4种状态组合。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">relay_init()</span>
+                                <span class="func-tag">relay_task()</span>
+                                <span class="func-tag">relay_auto_run()</span>
+                                <span class="func-tag">relay_manual_run()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge sensor">SENSOR</div>
+                                <h3>传感器驱动</h3>
+                            </div>
+                            <p>光照传感器使用ADC采集模拟信号，温度传感器使用DS18B20通过1-Wire协议通信。支持原始数据读取和等级判断。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">light_sensor_read_raw()</span>
+                                <span class="func-tag">light_sensor_get_level()</span>
+                                <span class="func-tag">temp_sensor_read_celsius()</span>
+                                <span class="func-tag">temp_sensor_get_level()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge display">DISPLAY</div>
+                                <h3>OLED显示</h3>
+                            </div>
+                            <p>使用U8g2库驱动SH1106 OLED显示屏，实时显示系统模式、传感器数据、设备状态和WiFi连接状态。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">display_init()</span>
+                                <span class="func-tag">display_update_info()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge rgb">RGB</div>
+                                <h3>WS2812 RGB控制</h3>
+                            </div>
+                            <p>使用Adafruit_NeoPixel库控制WS2812 RGB灯，实现非阻塞渐变动画。根据系统状态显示不同的颜色模式。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">ws2812_init()</span>
+                                <span class="func-tag">ws2812_boot_sequence()</span>
+                                <span class="func-tag">ws2812_task()</span>
+                                <span class="func-tag">fade_to()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge wifi">WiFi</div>
+                                <h3>WiFi连接管理</h3>
+                            </div>
+                            <p>自动连接保存的WiFi网络，支持串口配置SSID和密码。提供连接状态监测和自动重连功能。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">wifi_init()</span>
+                                <span class="func-tag">wifi_task()</span>
+                                <span class="func-tag">wifi_serial_config()</span>
+                                <span class="func-tag">wifi_save_config()</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <div class="module-header">
+                                <div class="module-badge mqtt">MQTT</div>
+                                <h3>MQTT通信</h3>
+                            </div>
+                            <p>基于PubSubClient库实现MQTT协议，支持状态上报、远程控制、阈值配置和设备重启命令。</p>
+                            <div class="module-functions">
+                                <span class="func-tag">mqtt_init()</span>
+                                <span class="func-tag">mqtt_task()</span>
+                                <span class="func-tag">mqtt_report_status()</span>
+                                <span class="func-tag">mqtt_callback()</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div id="page-operation" class="page-content">
+                    <section class="section-header">
+                        <h1>操作指南</h1>
+                        <p>详细的系统操作说明</p>
+                    </section>
+
+                    <section class="operation-modes">
+                        <div class="mode-card active-mode">
+                            <div class="mode-header">
+                                <div class="mode-icon auto">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                        <path d="M3 3v5h5"></path>
+                                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                                        <path d="M16 21h5v-5"></path>
+                                    </svg>
+                                </div>
+                                <div class="mode-title">
+                                    <h3>自动模式</h3>
+                                    <span class="mode-desc">系统上电默认模式</span>
+                                </div>
+                            </div>
+                            <div class="mode-content">
+                                <h4>工作原理</h4>
+                                <p>系统根据光照传感器和温度传感器的数据，自动控制照明和风扇设备：</p>
+                                <ul class="mode-list">
+                                    <li>当光强低于设定阈值时，自动开启照明灯(RELAY1)</li>
+                                    <li>当温度高于设定阈值时，自动开启风扇(RELAY2)</li>
+                                    <li>阈值可通过串口或MQTT配置，配置保存在Flash中</li>
+                                </ul>
+                                <div class="mode-thresholds">
+                                    <div class="threshold-item">
+                                        <span class="threshold-label">温度阈值</span>
+                                        <span class="threshold-value">默认 28°C</span>
+                                    </div>
+                                    <div class="threshold-item">
+                                        <span class="threshold-label">光照阈值</span>
+                                        <span class="threshold-value">默认 119 lux</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mode-card manual-mode">
+                            <div class="mode-header">
+                                <div class="mode-icon manual">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2a10 10 0 1 0 10 10 10 10 0 0 0-10-10z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <line x1="12" y1="2" x2="12" y2="6"></line>
+                                        <line x1="12" y1="18" x2="12" y2="22"></line>
+                                        <line x1="2" y1="12" x2="6" y2="12"></line>
+                                        <line x1="18" y1="12" x2="22" y2="12"></line>
+                                    </svg>
+                                </div>
+                                <div class="mode-title">
+                                    <h3>手动模式</h3>
+                                    <span class="mode-desc">长按KEY2 2秒切换</span>
+                                </div>
+                            </div>
+                            <div class="mode-content">
+                                <h4>工作原理</h4>
+                                <p>用户通过按键手动控制设备状态，短按KEY2循环切换4种状态：</p>
+                                <div class="state-matrix">
+                                    <div class="state-row">
+                                        <span class="state-num">状态0</span>
+                                        <span class="state-led">灯: OFF</span>
+                                        <span class="state-fan">风扇: OFF</span>
+                                    </div>
+                                    <div class="state-row">
+                                        <span class="state-num">状态1</span>
+                                        <span class="state-led">灯: OFF</span>
+                                        <span class="state-fan">风扇: ON</span>
+                                    </div>
+                                    <div class="state-row">
+                                        <span class="state-num">状态2</span>
+                                        <span class="state-led">灯: ON</span>
+                                        <span class="state-fan">风扇: OFF</span>
+                                    </div>
+                                    <div class="state-row">
+                                        <span class="state-num">状态3</span>
+                                        <span class="state-led">灯: ON</span>
+                                        <span class="state-fan">风扇: ON</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="key-guide">
+                        <h2 class="section-title">按键操作</h2>
+                        <div class="key-grid">
+                            <div class="key-card">
+                                <div class="key-icon">
+                                    <span class="key-label">KEY1</span>
+                                    <span class="key-pin">GPIO20</span>
+                                </div>
+                                <div class="key-function">
+                                    <h4>系统使能</h4>
+                                    <p>自锁按键，按下使能系统，释放关闭系统。系统关闭时所有设备停止工作。</p>
+                                </div>
+                            </div>
+                            <div class="key-card">
+                                <div class="key-icon">
+                                    <span class="key-label">KEY2</span>
+                                    <span class="key-pin">GPIO21</span>
+                                </div>
+                                <div class="key-function">
+                                    <h4>模式切换 / 状态切换</h4>
+                                    <ul>
+                                        <li><strong>短按 (2ms-1s):</strong> 手动模式下切换设备状态</li>
+                                        <li><strong>长按 (≥2s):</strong> 在自动/手动模式之间切换</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="rgb-guide">
+                        <h2 class="section-title">RGB指示灯状态</h2>
+                        <div class="rgb-table">
+                            <div class="rgb-header">
+                                <span>状态</span>
+                                <span>颜色模式</span>
+                                <span>说明</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>系统正常</span>
+                                <span class="rgb-pattern normal">红→绿→蓝→灭</span>
+                                <span>WiFi和MQTT均已连接</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>WiFi断开</span>
+                                <span class="rgb-pattern wifi">红→绿→灭</span>
+                                <span>WiFi未连接，正在重连</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>MQTT断开</span>
+                                <span class="rgb-pattern mqtt">红→绿→灭→蓝→灭→红</span>
+                                <span>WiFi已连接，MQTT未连接</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>仅灯亮</span>
+                                <span class="rgb-pattern led">红→灭→绿→灭→蓝→灭</span>
+                                <span>RELAY1开启</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>仅风扇</span>
+                                <span class="rgb-pattern fan">红→绿→蓝→灭</span>
+                                <span>RELAY2开启</span>
+                            </div>
+                            <div class="rgb-row">
+                                <span>灯和风扇</span>
+                                <span class="rgb-pattern both">红→灭→红→灭→绿→灭→绿→灭→蓝→灭→蓝→灭</span>
+                                <span>RELAY1和RELAY2均开启</span>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div id="page-mqtt" class="page-content">
+                    <section class="section-header">
+                        <h1>MQTT协议</h1>
+                        <p>物联网通信协议规范</p>
+                    </section>
+
+                    <section class="mqtt-config">
+                        <h2 class="section-title">默认配置</h2>
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <span class="config-label">服务器地址</span>
+                                <span class="config-value">47.98.170.180</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-label">端口</span>
+                                <span class="config-value">8081</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-label">用户名</span>
+                                <span class="config-value">dzdx_emqx</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-label">密码</span>
+                                <span class="config-value">********</span>
+                            </div>
+                            <div class="config-item">
+                                <span class="config-label">设备ID</span>
+                                <span class="config-value">PCT_100_006</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="mqtt-topics">
+                        <h2 class="section-title">主题规范</h2>
+                        <div class="topic-card">
+                            <h3>状态上报主题</h3>
+                            <code class="topic-code">chemctrl/{device_id}/status</code>
+                            <p>设备主动上报状态信息，包括温度、光照、模式、继电器状态等。</p>
+                        </div>
+                        <div class="topic-card">
+                            <h3>命令接收主题</h3>
+                            <code class="topic-code">chemctrl/{device_id}/command</code>
+                            <p>接收远程控制命令，支持设置继电器、切换模式、配置阈值等操作。</p>
+                        </div>
+                    </section>
+
+                    <section class="mqtt-messages">
+                        <h2 class="section-title">消息格式</h2>
+                        
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>状态上报</h3>
+                                <span class="message-type publish">PUBLISH</span>
+                            </div>
+                            <pre class="message-code">{
+  "temperature": 25.5,
+  "light": 150,
+  "mode": "auto",
+  "key1_lock": true,
+  "relay3": true,
+  "relay4": false,
+  "temp_threshold": 28.0,
+  "light_threshold": 119
+}</pre>
+                        </div>
+
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>设置继电器</h3>
+                                <span class="message-type subscribe">SUBSCRIBE</span>
+                            </div>
+                            <pre class="message-code">{
+  "cmd": "set_relay",
+  "relay": 3,
+  "value": true
+}</pre>
+                            <p class="message-note">relay: 3=照明, 4=风扇; value: true=开, false=关</p>
+                        </div>
+
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>切换模式</h3>
+                                <span class="message-type subscribe">SUBSCRIBE</span>
+                            </div>
+                            <pre class="message-code">{
+  "cmd": "set_mode",
+  "mode": "auto"
+}</pre>
+                            <p class="message-note">mode: "auto"=自动模式, "manual"=手动模式</p>
+                        </div>
+
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>获取状态</h3>
+                                <span class="message-type subscribe">SUBSCRIBE</span>
+                            </div>
+                            <pre class="message-code">{
+  "cmd": "get_status"
+}</pre>
+                            <p class="message-note">触发设备立即上报状态，5秒内限制一次</p>
+                        </div>
+
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>设置阈值</h3>
+                                <span class="message-type subscribe">SUBSCRIBE</span>
+                            </div>
+                            <pre class="message-code">{
+  "cmd": "set_threshold",
+  "temp": 28.0,
+  "light": 119
+}</pre>
+                            <p class="message-note">可单独设置温度或光照阈值，配置保存到Flash</p>
+                        </div>
+
+                        <div class="message-card">
+                            <div class="message-header">
+                                <h3>设备重启</h3>
+                                <span class="message-type subscribe">SUBSCRIBE</span>
+                            </div>
+                            <pre class="message-code">{
+  "cmd": "reboot"
+}</pre>
+                            <p class="message-note">2秒后设备重启</p>
+                        </div>
+                    </section>
+
+                    <section class="mqtt-flow">
+                        <h2 class="section-title">通信流程</h2>
+                        <div class="flow-diagram">
+                            <div class="flow-step">
+                                <div class="flow-box">WiFi连接</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-box">MQTT连接</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-box">订阅命令主题</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-box">上报初始状态</div>
+                            </div>
+                            <div class="flow-arrow">→</div>
+                            <div class="flow-step">
+                                <div class="flow-box">状态变化时上报</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <div id="page-commands" class="page-content">
+                    <section class="section-header">
+                        <h1>串口命令</h1>
+                        <p>通过串口终端控制和配置系统</p>
+                    </section>
+
+                    <section class="command-groups">
+                        <div class="command-group">
+                            <h3 class="group-title">WiFi命令</h3>
+                            <div class="command-table">
+                                <div class="command-row header">
+                                    <span>命令</span>
+                                    <span>说明</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>disconnect</code>
+                                    <span>断开WiFi并禁用扫描</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>connect</code>
+                                    <span>重新启用WiFi连接</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="command-group">
+                            <h3 class="group-title">MQTT命令</h3>
+                            <div class="command-table">
+                                <div class="command-row header">
+                                    <span>命令</span>
+                                    <span>说明</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config</code>
+                                    <span>进入MQTT配置模式，依次输入服务器、端口、用户名、密码、设备ID</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_clear</code>
+                                    <span>清除保存的MQTT配置</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_status</code>
+                                    <span>查看MQTT配置和连接状态</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_report</code>
+                                    <span>手动触发状态上报</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="command-group">
+                            <h3 class="group-title">MQTT细分配置命令</h3>
+                            <div class="command-table">
+                                <div class="command-row header">
+                                    <span>命令</span>
+                                    <span>说明</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config_server {地址}</code>
+                                    <span>设置MQTT服务器地址</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config_port {端口}</code>
+                                    <span>设置MQTT端口</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config_username {用户名}</code>
+                                    <span>设置MQTT用户名</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config_password {密码}</code>
+                                    <span>设置MQTT密码</span>
+                                </div>
+                                <div class="command-row">
+                                    <code>mqtt_config_device_id {ID}</code>
+                                    <span>设置设备ID</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="config-guide">
+                        <h2 class="section-title">配置流程</h2>
+                        <div class="config-steps">
+                            <div class="config-step">
+                                <span class="step-num">1</span>
+                                <div class="step-content">
+                                    <h4>打开串口终端</h4>
+                                    <p>使用Arduino IDE串口监视器或其他串口工具，波特率设置为115200。</p>
+                                </div>
+                            </div>
+                            <div class="config-step">
+                                <span class="step-num">2</span>
+                                <div class="step-content">
+                                    <h4>发送配置命令</h4>
+                                    <p>输入 <code>mqtt_config</code> 进入配置模式。</p>
+                                </div>
+                            </div>
+                            <div class="config-step">
+                                <span class="step-num">3</span>
+                                <div class="step-content">
+                                    <h4>输入参数</h4>
+                                    <p>按照提示依次输入服务器地址、端口、用户名、密码和设备ID。按回车保持默认值，输入esc退出。</p>
+                                </div>
+                            </div>
+                            <div class="config-step">
+                                <span class="step-num">4</span>
+                                <div class="step-content">
+                                    <h4>验证配置</h4>
+                                    <p>输入 <code>mqtt_status</code> 查看配置是否生效。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="serial-example">
+                        <h2 class="section-title">串口交互示例</h2>
+                        <pre class="example-code">===== 智能环境控制系统 =====
+KEY1(GPIO20): 自锁按键，系统使能
+KEY2(GPIO21): 长按2秒切换模式
+RELAY1(GPIO6): 照明灯
+RELAY2(GPIO7): 风扇
+...
+-----------------------------
+串口命令:
+  disconnect - 断开WiFi并禁用扫描
+  connect    - 重新启用WiFi连接
+  mqtt_config - 配置MQTT参数
+  mqtt_clear - 清除MQTT配置
+  mqtt_status - 查看MQTT状态
+  mqtt_report - 手动上报状态
+-----------------------------
+模式:自动模式
+
+> mqtt_config
+
+===== MQTT Configuration =====
+Enter 'esc' at any time to exit without saving
+
+Current MQTT configuration:
+------------------------------
+MQTT Server: 47.98.170.180:8081
+Username: dzdx_emqx
+Device ID: PCT_100_006
+------------------------------
+
+Enter new MQTT server (or press Enter to keep current):
+> 
+
+Enter new MQTT port (or press Enter to keep current):
+> 
+
+Enter new MQTT username (or press Enter to keep current):
+> 
+
+Enter new MQTT password (or press Enter to keep current):
+> 
+
+Enter new Device ID (or press Enter to keep current):
+> PCT_100_007
+
+New MQTT configuration:
+------------------------------
+MQTT Server: 47.98.170.180:8081
+Username: dzdx_emqx
+Device ID: PCT_100_007
+------------------------------
+MQTT configuration saved to flash!
+MQTT configuration updated! Will reconnect...</pre>
+                    </section>
+                </div>
+
+                <div id="page-troubleshooting" class="page-content">
+                    <section class="section-header">
+                        <h1>故障排查</h1>
+                        <p>常见问题及解决方法</p>
+                    </section>
+
+                    <section class="troubleshooting-grid">
+                        <div class="trouble-card">
+                            <div class="trouble-icon warning">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <h3>设备无响应</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>KEY1未按下，系统未使能</li>
+                                    <li>电源电压不足</li>
+                                    <li>接线错误</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>确保KEY1按下使能系统</li>
+                                    <li>检查电源输入（建议5V/2A）</li>
+                                    <li>对照引脚分配表检查接线</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="trouble-card">
+                            <div class="trouble-icon error">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3>WiFi连接失败</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>WiFi信号弱</li>
+                                    <li>SSID或密码错误</li>
+                                    <li>网络加密方式不支持</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>靠近路由器或使用信号更强的网络</li>
+                                    <li>使用串口重新配置WiFi</li>
+                                    <li>确保网络使用WPA/WPA2加密</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="trouble-card">
+                            <div class="trouble-icon error">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                            </div>
+                            <h3>MQTT连接失败</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>服务器地址或端口错误</li>
+                                    <li>用户名或密码错误</li>
+                                    <li>网络不通</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>检查MQTT服务器配置</li>
+                                    <li>确认网络连接正常</li>
+                                    <li>使用 <code>mqtt_status</code> 查看状态</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="trouble-card">
+                            <div class="trouble-icon warning">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <h3>传感器数据异常</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>传感器接线错误</li>
+                                    <li>传感器损坏</li>
+                                    <li>ADC配置错误</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>检查传感器接线</li>
+                                    <li>更换传感器测试</li>
+                                    <li>检查ADC衰减配置</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="trouble-card">
+                            <div class="trouble-icon warning">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <h3>继电器不工作</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>继电器模块未供电</li>
+                                    <li>控制引脚接线错误</li>
+                                    <li>继电器损坏</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>检查继电器模块电源（通常需要5V）</li>
+                                    <li>对照引脚分配表检查接线</li>
+                                    <li>更换继电器模块测试</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="trouble-card">
+                            <div class="trouble-icon warning">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <h3>OLED显示异常</h3>
+                            <div class="trouble-content">
+                                <h4>可能原因</h4>
+                                <ul>
+                                    <li>I2C接线错误</li>
+                                    <li>显示屏损坏</li>
+                                    <li>I2C地址冲突</li>
+                                </ul>
+                                <h4>解决方法</h4>
+                                <ul>
+                                    <li>检查SDA(GPIO4)和SCL(GPIO5)接线</li>
+                                    <li>尝试更换OLED显示屏</li>
+                                    <li>确保没有其他I2C设备占用同一总线</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="debug-tips">
+                        <h2 class="section-title">调试技巧</h2>
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <div class="tip-icon">🔍</div>
+                                <div class="tip-content">
+                                    <h4>查看串口输出</h4>
+                                    <p>打开串口监视器（波特率115200），系统会输出详细的运行日志，包括传感器数据、设备状态和错误信息。</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">📊</div>
+                                <div class="tip-content">
+                                    <h4>观察RGB指示灯</h4>
+                                    <p>WS2812 RGB灯显示系统状态，不同的颜色模式对应不同的运行状态，可快速判断系统是否正常。</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">🌐</div>
+                                <div class="tip-content">
+                                    <h4>MQTT消息测试</h4>
+                                    <p>使用MQTT客户端工具（如MQTTX）订阅设备状态主题，发送控制命令测试设备响应。</p>
+                                </div>
+                            </div>
+                            <div class="tip-item">
+                                <div class="tip-icon">🔄</div>
+                                <div class="tip-content">
+                                    <h4>恢复默认配置</h4>
+                                    <p>如果配置出现问题，可使用 <code>mqtt_clear</code> 清除MQTT配置，系统将恢复默认值。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <button class="page-btn prev" id="prev-btn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    上一页
+                </button>
+                <div class="page-indicator">
+                    <span class="page-number">1</span>
+                    <span class="page-total">/ 8</span>
+                </div>
+                <button class="page-btn next" id="next-btn">
+                    下一页
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/nav.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

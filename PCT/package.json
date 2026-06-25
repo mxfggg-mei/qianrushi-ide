@@ -1,0 +1,13 @@
+{
+  "name": "pct-100",
+  "version": "1.0.0",
+  "description": "PCT-100 化工过程控制实训装置",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["electron", "mqtt", "control", "pct"],
+  "author": "",
+  "license": "MIT"
+}
